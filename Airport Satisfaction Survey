@@ -1,0 +1,129 @@
+SELECT * FROM air..airline_report
+
+-- Total Passangers
+
+SELECT 
+	COUNT(*) as [Total Passangers] 
+FROM air..airline_report;
+
+-- Finding what levels of satisfaction are in the data
+
+SELECT DISTINCT(Satisfaction) 
+FROM air..airline_report;
+
+-- Percent of satisfaction, rounded to nearest hundredth
+
+SELECT 
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Satisfied' THEN 1 END) * 100.0/COUNT(*)),2) as Satisfied,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Neutral or Dissatisfied' THEN 1 END) * 100.0/COUNT(*)),2) as [Neutral or Dissatisfied]
+FROM air..airline_report
+
+-- Customer types
+
+SELECT 
+	DISTINCT([Customer Type])
+from air..airline_report
+
+-- Percent of satisfaction by Customer Type
+SELECT 
+	[Customer Type],
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Satisfied' THEN 1 END) * 100.0/COUNT(*)),2) as Satisfied,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Neutral or Dissatisfied' THEN 1 END) * 100.0/COUNT(*)),2) as [Neutral or Dissatisfied]
+FROM air..airline_report
+GROUP BY [Customer Type]
+
+-- Type of Travel
+
+SELECT DISTINCT[Type of Travel] 
+from air..airline_report
+
+
+-- Percent of satisfaction using Type of Travel, Customer Type, Age, and Class in satisfaction descending order.
+
+SELECT 
+	[Type of Travel],
+	[Customer Type],
+	Class,
+	ROUND((AVG(age)),0) as [Average Age],
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Satisfied' THEN 1 END) * 100.0/COUNT(*)),2) as Satisfied,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Neutral or Dissatisfied' THEN 1 END) * 100.0/COUNT(*)),2) as [Neutral or Dissatisfied]
+FROM air..airline_report
+GROUP BY [Type of Travel], [Customer Type], Class
+ORDER BY Satisfied desc
+
+-- Finding customer's preferences and finding correlations to passenger groups.
+
+SELECT 
+	[Type of Travel],
+	[Customer Type],
+	Class,
+	COUNT(CASE WHEN satisfaction = 'Satisfied' THEN 'yes' 
+	ELSE 'no' END) as [Number of Passengers],
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Satisfied' THEN 1 END) * 100.0/COUNT(*)),2) as Satisfied,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Neutral or Dissatisfied' THEN 1 END) * 100.0/COUNT(*)),2) as [Neutral or Dissatisfied],
+	ROUND((AVG(age)),0) as [Average Age],
+	ROUND((AVG([Flight Distance])),0) as [Average Flight Distance],
+	ROUND((AVG([Ease of Online Booking])),1) as [Average Online Booking Score],
+	ROUND((AVG([Check-in Service])),1) as [Average Check-In Service Score],
+	ROUND((AVG([Seat Comfort])),1) as [Average Seat Comfort Score],
+	ROUND((AVG([Leg Room Service])),1) as [Average Legroom Score],
+	ROUND((AVG([Food and Drink])),1) as [Average Food and Beverage Score],
+	ROUND((AVG([In-flight Service])),1) as [Average In-Flight Service Score]
+FROM air..airline_report
+GROUP BY [Type of Travel], [Customer Type], Class
+ORDER BY [Number of Passengers] desc
+
+-- Satisfaction by Class
+
+SELECT 
+	Class,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Satisfied' THEN 1 END) * 100.0/COUNT(*)),2) as Satisfied,
+	ROUND((COUNT(CASE WHEN Satisfaction = 'Neutral or Dissatisfied' THEN 1 END) * 100.0/COUNT(*)),2) as [Neutral or Dissatisfied]
+FROM air..airline_report
+GROUP BY Class
+ORDER BY Satisfied desc
+
+-- Average Delay departing and arriving (in minutes)
+
+SELECT
+	ROUND(AVG([Departure Delay]),1) as [Average Departure Delay],
+	ROUND(AVG([Arrival Delay]),1) as [Average Arrival Delay]
+FROM air..airline_report
+
+-- Percent of returning and first-time passengers
+
+SELECT
+	COUNT(CASE WHEN [Customer Type] = 'Returning' THEN 'yes' 
+	ELSE 'no' END) as Total,
+	ROUND((COUNT(CASE WHEN [Customer Type] = 'Returning' THEN 1 END) * 100.0/COUNT(*)),2) as [Percent Returning],
+	ROUND((COUNT(CASE WHEN [Customer Type] = 'First-time' THEN 1 END) * 100.0/COUNT(*)),2) as [Percent First-time]
+FROM air..airline_report
+
+-- Number of passengers based on Customer Type
+SELECT
+	[Customer Type],
+	COUNT(CASE WHEN [Customer Type] = 'Returning' THEN 'yes' 
+	ELSE 'no' END) as Total
+FROM air..airline_report
+GROUP BY [Customer Type]
+
+
+-- Average scores for each category	      
+SELECT 
+	ROUND(AVG([Departure Delay]),1) as [Average Departure Delay],
+	ROUND(AVG([Arrival Delay]),1) as [Average Arrival Delay],
+	ROUND(AVG([Departure and Arrival Time Convenience]),1) as [Average Departure and Arrival Time Convenience Score],
+	ROUND(AVG([Ease of Online Booking]),1) as [Average Ease of Online Booking Score],
+	ROUND(AVG([Check-in Service]),1) as [Average Check-in Service Score],
+	ROUND(AVG([Online Boarding]),1) as [Average Online Boarding Score],
+	ROUND(AVG([Gate Location]),1) as [Average Gate Location Score],
+	ROUND(AVG([On-board Service]),1) as [Average Onboarding Service Score],
+	ROUND(AVG([Seat Comfort]),1) as [Average Seat Comfort Score],
+	ROUND(AVG([Leg Room Service]),1) as [Average Leg Room Score],
+	ROUND(AVG([Cleanliness]),1) as [Average Cleanliness Score],
+	ROUND(AVG([Food and Drink]),1) as [Average Food and Drink Score],
+	ROUND(AVG([In-flight Service]),1) as [Average In-flight Service Score],
+	ROUND(AVG([In-flight Wifi Service]),1) as [Average In-flight WiFi Service Score],
+	ROUND(AVG([In-flight Entertainment]),1) as [Average In-flight Entertainment Score],
+	ROUND(AVG([Baggage Handling]),1) as [Average Baggage Handling Score]
+FROM air..airline_report

@@ -1,0 +1,68 @@
+-- In this project, I wanted to work with data especially in the aviation industry. Being a resident of New York when the plane landed in the Hudson, I became interested 
+into seeing how likely this scenarios occur. I used different queries to show the best data possible. I hope you enjoy my results. 
+
+
+
+
+select * from IndiaRainfall..WildlifeStrikes
+
+-- Total Wildlife Strikes from 1990-2014
+
+select count(*) as TotalIncidents from IndiaRainfall..WildlifeStrikes
+where [Incident Year] BETWEEN 1990 AND 2014
+
+
+-- Total Wildlife Strike Incidents per year (1990-2014)
+
+select [Incident Year],count(*) as TotalIncidents from IndiaRainfall..WildlifeStrikes
+where [Incident Year] BETWEEN 1990 AND 2014
+Group by [Incident Year] 
+Order by [Incident Year] asc
+
+
+-- Wildlife Strikes per Month (1990-2014)
+
+select [Incident Month], count(*) as TotalMonthlyIncidents from IndiaRainfall..WildlifeStrikes
+where [Incident Month] BETWEEN 1 AND 12
+Group by [Incident Month]
+Order by [Incident Month] asc
+
+
+
+-- Wildlife Strikes by Airline Provider, top 5 (1990-2014)
+
+select Operator, count(*) as TotalIncidents from IndiaRainfall..WildlifeStrikes 
+where [Incident Year] BETWEEN 1990 AND 2015
+AND  NOT Operator = 'UNKNOWN' AND NOT Operator = 'BUSINESS'
+Group by Operator
+Order by TotalIncidents desc   
+-- Wildlife Strikes by Airport
+
+select [Airport ID], count(*) as TotalIncidents from IndiaRainfall..WildlifeStrikes 
+where [Incident Year] BETWEEN 1990 AND 2014
+AND NOT [Airport ID] = 'ZZZZ' 
+Group by [Airport ID]
+Order by TotalIncidents desc 
+
+-- Wildlife Strikes by Aircraft
+
+select Aircraft, count(*) as TotalIncidents from IndiaRainfall..WildlifeStrikes 
+where [Incident Year] BETWEEN 1990 AND 2014 
+AND NOT Aircraft = 'UNKNOWN'
+Group by Aircraft
+Order by TotalIncidents desc 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
