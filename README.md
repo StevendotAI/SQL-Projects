@@ -1,5 +1,5 @@
-Hello, and welcome to my SQL Projects page! Here is where I will go in depth in various datasets, showcasing my SQL skills and knowledge. I hope you enjoy
-my data explorations!
+Hello, and welcome to my SQL Projects page! Here is where I will go in depth in various datasets, showcasing my SQL skills and knowledge. 
+I hope you enjoy my data explorations!
 
 # SQL-Query-Log
 Here's a log of my SQL skillset!
